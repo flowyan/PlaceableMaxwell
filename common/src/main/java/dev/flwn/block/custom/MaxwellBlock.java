@@ -49,13 +49,13 @@ public class MaxwellBlock extends FallingBlock {
         if (stack.is(ItemTags.FISHES)) {
             world.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 0, 0.5, 0);
             stack.shrink(1); // consume one fish item
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                 // play eating sound
                 world.playSound(null, pos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1, new Random().nextFloat() * (1.2f - 0.8f) + 0.8f);
             }
         } else {
             world.addParticle(ParticleTypes.HEART, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 0, 0.5, 0);
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                 world.playSound(null, pos, SoundEvents.CAT_AMBIENT, SoundSource.BLOCKS, 1, new Random().nextFloat() * (1.2f - 0.8f) + 0.8f);
             }
         }

@@ -16,21 +16,21 @@ logoFile = "maxwell.png"
 [[dependencies.placeablemaxwell]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.8,)"
+versionRange = "[21.9,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeablemaxwell]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.8,)"
+versionRange = "[1.21.9,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeablemaxwell]]
 modId = "architectury"
 type = "required"
-versionRange = "[17.0.8,)"
+versionRange = "[18.0.3,)"
 ordering = "AFTER"
 side = "BOTH"
 
