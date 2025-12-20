@@ -1,2 +1,11 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+*               text=auto eol=lf
+
+/gradlew        text eol=lf
+
+*.bat           text eol=crlf
+
+*.png           binary
+*.jpg           binary
+*.ogg           binary
+*.mp3           binary
+*.mp4           binary

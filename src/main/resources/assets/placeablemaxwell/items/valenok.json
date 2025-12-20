@@ -1,0 +1,28 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "placeablemaxwell:holiday",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "placeablemaxwell:block/valenok"
+    },
+
+    "cases": [
+      {
+        "when": "XMAS",
+        "model": {
+          "type": "minecraft:model",
+          "model": "placeablemaxwell:block/holiday/xmas/valenok"
+        }
+      },
+      {
+        "when": "NONE",
+        "model": {
+          "type": "minecraft:model",
+          "model": "placeablemaxwell:block/valenok"
+        }
+      }
+    ]
+  },
+  "oversized_in_gui": false
+}

@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "placeablemaxwell:block/mars", "y": 180 },
-    "facing=south": { "model": "placeablemaxwell:block/mars", "y": 0 },
-    "facing=west": { "model": "placeablemaxwell:block/mars", "y": 90 },
-    "facing=east": { "model": "placeablemaxwell:block/mars", "y": 270 }
-  }
-}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "holiday=none,facing=north": { "model": "placeablemaxwell:block/vasilisa", "y": 180 },
+    "holiday=none,facing=south": { "model": "placeablemaxwell:block/vasilisa", "y": 0 },
+    "holiday=none,facing=west": { "model": "placeablemaxwell:block/vasilisa", "y": 90 },
+    "holiday=none,facing=east": { "model": "placeablemaxwell:block/vasilisa", "y": 270 },
+
+    "holiday=xmas,facing=north": { "model": "placeablemaxwell:block/holiday/xmas/vasilisa", "y": 180 },
+    "holiday=xmas,facing=south": { "model": "placeablemaxwell:block/holiday/xmas/vasilisa", "y": 0 },
+    "holiday=xmas,facing=west": { "model": "placeablemaxwell:block/holiday/xmas/vasilisa", "y": 90 },
+    "holiday=xmas,facing=east": { "model": "placeablemaxwell:block/holiday/xmas/vasilisa", "y": 270 }
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "placeablemaxwell:block/valenok", "y": 180 },
-    "facing=south": { "model": "placeablemaxwell:block/valenok", "y": 0 },
-    "facing=west": { "model": "placeablemaxwell:block/valenok", "y": 90 },
-    "facing=east": { "model": "placeablemaxwell:block/valenok", "y": 270 }
-  }
-}
