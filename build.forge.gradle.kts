@@ -64,3 +64,8 @@ sourceSets {
 tasks.named("createMinecraftArtifacts") {
 	dependsOn(tasks.named("stonecutterGenerate"))
 }
+
+tasks.named("reobfJar") {
+	enabled = false
+}
+
