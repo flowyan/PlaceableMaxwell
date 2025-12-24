@@ -79,13 +79,26 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		)
 
 		if (isFabric) {
-			extension.dependencies { required("java") { versionRange = ">=${extension.requiredJava.get().majorVersion}" } }
+			extension.dependencies {
+				required("java") {
+					versionRange = ">=${extension.requiredJava.get().majorVersion}"
+				}
+			}
 		}
 
 		configureFletchingTable()
 		configureJarTask(modId)
 		configureIdea()
-		configureProcessResources(isFabric, isNeoForge, isForge, modId, "$modVersion$channelTag", mcVersion, extension, extension.requiredJava.get())
+		configureProcessResources(
+			isFabric,
+			isNeoForge,
+			isForge,
+			modId,
+			"$modVersion$channelTag",
+			mcVersion,
+			extension,
+			extension.requiredJava.get()
+		)
 		configureJava(stonecutter, extension.requiredJava.get())
 		registerBuildAndCollectTask(extension, "$modVersion$channelTag")
 		configurePublishing(extension, loader, stonecutter, "$modVersion$channelTag", channelTag, version.toString())
@@ -152,7 +165,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 					exclude("META-INF/mods.toml", "fabric.mod.json", "aw/*.accesswidener", ".cache", "pack.mcmeta")
 				}
 
-				isForge-> {
+				isForge -> {
 					filesMatching("META-INF/mods.toml") { expand(props) }
 					exclude("META-INF/neoforge.mods.toml", "fabric.mod.json", "aw/*.accesswidener", ".cache")
 				}
@@ -224,9 +237,31 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	}
 
 	private fun Project.configureFletchingTable() {
+		val mcVersion = prop("deps.minecraft")
+		val belowNewItemFolderVersions =
+			listOf("1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6", "1.21.0", "1.21.1", "1.21.2", "1.21.3")
+		val belowNewItemFolder = belowNewItemFolderVersions.contains(mcVersion)
+
 		extensions.configure<FletchingTableExtension> {
 			mixins.create("main").apply {
 				mixin("default", "${prop("mod.id")}.mixins.json")
+			}
+			j52j.register("main") {
+				if (belowNewItemFolder) {
+					extension("json", "assets/${prop("mod.id")}/items/*.json5 -> ../models/item");
+				} else {
+					extension("json", "assets/${prop("mod.id")}/items/*.json5");
+				}
+
+				extension("json", "assets/${prop("mod.id")}/models/block/*.json5");
+				extension("json", "assets/${prop("mod.id")}/models/block/holiday/xmas/*.json5");
+
+				extension("json", "data/${prop("mod.id")}/recipe/*.json5");
+				extension("json", "data/${prop("mod.id")}/loot_table/blocks/*.json5");
+				if (listOf("1.20.1", "1.20.6").contains(mcVersion)) {
+					extension("json", "data/${prop("mod.id")}/recipe/*.json5 -> ../recipes");
+					extension("json", "data/${prop("mod.id")}/loot_table/blocks/*.json5 -> ../../loot_tables/blocks");
+				}
 			}
 		}
 	}
