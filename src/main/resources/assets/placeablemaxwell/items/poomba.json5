@@ -1,0 +1,41 @@
+//? if >1.21.3 {
+{
+	"model": {
+		"type": "minecraft:select",
+		"property": "placeablemaxwell:holiday",
+		"fallback": {
+			"type": "minecraft:model",
+			"model": "placeablemaxwell:block/poomba"
+		},
+		"cases": [
+			{
+				"when": "XMAS",
+				"model": {
+					"type": "minecraft:model",
+					"model": "placeablemaxwell:block/holiday/xmas/poomba"
+				}
+			},
+			{
+				"when": "NONE",
+				"model": {
+					"type": "minecraft:model",
+					"model": "placeablemaxwell:block/poomba"
+				}
+			}
+		]
+	},
+	"oversized_in_gui": false
+}
+//?} elif <=1.21.3 {
+/*{
+	"parent": "placeablemaxwell:block/poomba",
+	"overrides": [
+		{
+			"predicate": {
+				"placeablemaxwell:xmas": 1
+			},
+			"model": "placeablemaxwell:block/holiday/xmas/poomba"
+		}
+	]
+}
+*///?}
