@@ -25,12 +25,12 @@ public class MaxwellMod {
 	private static final Platform PLATFORM = createPlatformInstance();
 
 	public static void onInitialize() {
-		LOGGER.info("Initializing {} on {}", MOD_ID, MaxwellMod.xplat().loader());
+		LOGGER.info("Initializing {} on {}. Meow!", MOD_ID, MaxwellMod.xplat().loader());
 		LOGGER.debug("{}: { version: {}; friendly_name: {} }", MOD_ID, MOD_VERSION, MOD_FRIENDLY_NAME);
 	}
 
 	public static void onInitializeClient() {
-		LOGGER.info("Initializing {} Client on {}", MOD_ID, MaxwellMod.xplat().loader());
+		LOGGER.info("Initializing {} Client on {}. Meow!", MOD_ID, MaxwellMod.xplat().loader());
 		LOGGER.debug("{}: { version: {}; friendly_name: {} }", MOD_ID, MOD_VERSION, MOD_FRIENDLY_NAME);
 	}
 

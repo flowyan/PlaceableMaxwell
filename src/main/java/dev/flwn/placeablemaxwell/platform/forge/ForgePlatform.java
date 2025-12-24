@@ -1,8 +1,8 @@
-package com.example.modtemplate.platform.forge;
+package dev.flwn.placeablemaxwell.platform.forge;
 
 //? forge {
 
-/*import com.example.modtemplate.platform.Platform;
+/*import dev.flwn.placeablemaxwell.platform.Platform;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 

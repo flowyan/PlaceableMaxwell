@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
-map_Kd maxwell
+map_Kd #maxwell
 
 newmtl red
 Ns 32.000008
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
-map_Kd xmashat
+map_Kd #xmashat
 
 newmtl whiskers
 Ns 32.000008
@@ -32,7 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
-map_Kd whiskers
+map_Kd #whiskers
 
 newmtl white
 Ns 32.000008
@@ -43,4 +43,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
-map_Kd xmashat
+map_Kd #xmashat

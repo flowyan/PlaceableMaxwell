@@ -11,6 +11,7 @@
 
   "placeablemaxwell.configuration.title": "Maxwell the placeable cat | Configuration",
   "placeablemaxwell.configuration.section.placeablemaxwell.common.toml": "Common Settings",
+  "placeablemaxwell.configuration.section.placeablemaxwell.common.toml.title": "Common Settings",
   "placeablemaxwell.configuration.holidayFeaturesEnabled": "Holiday Features",
   "placeablemaxwell.configuration.holidayFeaturesEnabled.tooltip": "Enable or disable holiday features.",
   "placeablemaxwell.configuration.forceHoliday": "Force Holiday",

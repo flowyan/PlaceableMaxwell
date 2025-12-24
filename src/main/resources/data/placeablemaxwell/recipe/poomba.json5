@@ -1,0 +1,31 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"R R",
+		"BRB",
+		"BBB"
+	],
+	"key": {
+		//? if >1.21.1 {
+
+		"B": "minecraft:black_wool",
+		"R": "minecraft:brown_wool"
+
+	
+		//? } else {
+		/*"B": {
+			"item": "minecraft:black_wool"
+		},
+		"R": {
+			"item": "minecraft:brown_wool"
+		}
+		*///? }
+	},
+	"result": {
+		//? if >1.20.1
+		"id": "placeablemaxwell:poomba",
+		//? if <=1.20.1
+		//"item": "placeablemaxwell:poomba",
+		"count": 1
+	}
+}

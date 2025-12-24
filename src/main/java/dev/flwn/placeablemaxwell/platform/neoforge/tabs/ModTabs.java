@@ -6,14 +6,26 @@ import dev.flwn.placeablemaxwell.platform.neoforge.item.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.world.level.block.Block;
 
+//? forge {
+/*import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+*///?}
+
+//? neoforge {
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+//?}
+
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ModTabs {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MaxwellMod.MOD_ID);
+	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MaxwellMod.MOD_ID);
 
 	public static final Supplier<CreativeModeTab> MAXWELL_TAB = CREATIVE_MODE_TABS.register("maxwell_tab", () -> CreativeModeTab.builder()
 			//Set the title of the tab. Don't forget to add a translation!
@@ -22,10 +34,6 @@ public class ModTabs {
 			.icon(() -> new ItemStack(ModItems.MAXWELL_BLOCK.get()))
 			//Add your items to the tab.
 			.displayItems((params, output) -> {
-				// Add all blocks
-				for (var block : ModBlocks.BLOCKS.getEntries()) {
-					output.accept(block.get().asItem());
-				}
 				// Add all items
 				for (var item : ModItems.ITEMS.getEntries()) {
 					output.accept(item.get());

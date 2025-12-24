@@ -1,0 +1,35 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"L L",
+		"LWL",
+		"GLG"
+	],
+	"key": {
+		//? if >1.21.1 {
+
+		"W": "minecraft:white_wool",
+		"G": "minecraft:gray_wool",
+		"L": "minecraft:light_gray_wool"
+
+	
+		//? } else {
+		/*"W": {
+			"item": "minecraft:white_wool"
+		},
+		"G": {
+			"item": "minecraft:gray_wool"
+		},
+		"L": {
+			"item": "minecraft:light_gray_wool"
+		}
+		*///? }
+	},
+	"result": {
+		//? if >1.20.1
+		"id": "placeablemaxwell:mars",
+		//? if <=1.20.1
+		//"item": "placeablemaxwell:mars",
+		"count": 1
+	}
+}

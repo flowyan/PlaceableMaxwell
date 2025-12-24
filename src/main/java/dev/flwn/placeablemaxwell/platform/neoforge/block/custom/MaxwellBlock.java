@@ -1,9 +1,10 @@
 package dev.flwn.placeablemaxwell.platform.neoforge.block.custom;
 
+//? if >1.20.1
 import com.mojang.serialization.MapCodec;
 import dev.flwn.placeablemaxwell.MaxwellMod;
-import dev.flwn.placeablemaxwell.platform.neoforge.CheckHoliday;
-import dev.flwn.placeablemaxwell.platform.neoforge.Config;
+import dev.flwn.placeablemaxwell.common.CheckHoliday;
+import dev.flwn.placeablemaxwell.common.MaxwellHoliday;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -11,14 +12,17 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 //? if <1.21.11 {
 /*import net.minecraft.resources.ResourceLocation;
- *///?} else {
+		*///?} else {
 import net.minecraft.resources.Identifier;
-//?}
+ //?}
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
+//? if >1.21.1 || =1.20.1
 import net.minecraft.world.InteractionResult;
+//? <=1.21.1 && !=1.20.1
+//import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
@@ -36,21 +40,21 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 import java.util.Random;
 
 
 public class MaxwellBlock extends FallingBlock {
 	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
-	public static final EnumProperty<Config.MaxwellHoliday> HOLIDAY = EnumProperty.create("holiday", Config.MaxwellHoliday.class);
+	public static final EnumProperty<MaxwellHoliday> HOLIDAY = EnumProperty.create("holiday", MaxwellHoliday.class);
 
-	//? if <1.21.11 {
-	/*public static final ResourceLocation DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(MaxwellMod.MOD_ID, "falling_maxwell_cat");
-	 *///?} else {
+	//? if >=1.21.11 {
 	public static final Identifier DAMAGE_ID = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, "falling_maxwell_cat");
-	//?}
-
+	 //?} elif >1.20.6 || =1.20.1 {
+	/*public static final ResourceLocation DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(MaxwellMod.MOD_ID, "falling_maxwell_cat");
+	*///?} else {
+	/*public static final ResourceLocation DAMAGE_ID = new ResourceLocation(MaxwellMod.MOD_ID, "falling_maxwell_cat");
+	 *///?}
 	public static final ResourceKey<DamageType> FALLING_MAXWELL_CAT = ResourceKey.create(Registries.DAMAGE_TYPE, DAMAGE_ID);
 
 	public MaxwellBlock(Properties properties) {
@@ -58,12 +62,20 @@ public class MaxwellBlock extends FallingBlock {
 
 		this.registerDefaultState(stateDefinition.any()
 				.setValue(FACING, Direction.NORTH)
-				.setValue(HOLIDAY, Config.MaxwellHoliday.NONE)
+				.setValue(HOLIDAY, MaxwellHoliday.NONE)
 		);
 	}
 
 	@Override
+			//? >1.21.1
 	protected @NotNull InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+			//? <=1.21.1 && !=1.20.1
+	//protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+			//? =1.20.1
+	//public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		//? =1.20.1
+		//ItemStack stack = player.getItemInHand(hand);
+
 		if (stack.is(ItemTags.FISHES)) {
 			world.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 0, 0.5, 0);
 			if (!player.isCreative()) stack.shrink(1); // consume one fish item
@@ -81,20 +93,25 @@ public class MaxwellBlock extends FallingBlock {
 		// Check holiday
 		switch (CheckHoliday.getCurrentHoliday()) {
 			case XMAS -> {
-				world.setBlock(pos, state.setValue(HOLIDAY, Config.MaxwellHoliday.XMAS), 3);
+				world.setBlock(pos, state.setValue(HOLIDAY, MaxwellHoliday.XMAS), 3);
 			}
 			case NONE -> {
-				world.setBlock(pos, state.setValue(HOLIDAY, Config.MaxwellHoliday.NONE), 3);
+				world.setBlock(pos, state.setValue(HOLIDAY, MaxwellHoliday.NONE), 3);
 			}
 		}
 
+		//? >1.21.1 || =1.20.1
 		return InteractionResult.SUCCESS;
+		//? <=1.21.1 && !=1.20.1
+		//return ItemInteractionResult.SUCCESS;
 	}
 
+	//? if >1.20.1 {
 	@Override
 	protected @NotNull MapCodec<MaxwellBlock> codec() {
 		return MapCodec.unit(this);
 	}
+	//?}
 
 	@Override
 	public int getDustColor(BlockState state, BlockGetter level, BlockPos pos) {
@@ -109,7 +126,7 @@ public class MaxwellBlock extends FallingBlock {
 	}
 
 	@Override
-	public @NotNull DamageSource getFallDamageSource(@NonNull Entity pEntity) {
+	public @NotNull DamageSource getFallDamageSource(Entity pEntity) {
 		return new DamageSource(
 				pEntity.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(FALLING_MAXWELL_CAT),
 				pEntity);
@@ -136,7 +153,7 @@ public class MaxwellBlock extends FallingBlock {
 			case XMAS -> {
 				return this.defaultBlockState()
 						.setValue(FACING, context.getHorizontalDirection())
-						.setValue(HOLIDAY, Config.MaxwellHoliday.XMAS);
+						.setValue(HOLIDAY, MaxwellHoliday.XMAS);
 			}
 			case NONE -> {
 				return facing;
@@ -146,4 +163,3 @@ public class MaxwellBlock extends FallingBlock {
 		return facing;
 	}
 }
-
