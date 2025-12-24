@@ -16,6 +16,10 @@ platform {
 		required("fabricloader") {
 			versionRange = ">=${libs.fabric.loader.get().version}"
 		}
+		optional("forge-config-api-port") {
+			slug("forge-config-screens-fabric")
+			versionRange = ">=${prop("deps.forge-config-api-port")}"
+		}
 		optional("modmenu") {}
 	}
 }
@@ -27,7 +31,7 @@ loom {
 		ideConfigGenerated(true)
 		runDir = "run/"
 		environment = "client"
-		programArgs("--username=Dev")
+		programArgs("--username=Flowyan")
 		configName = "Fabric Client"
 	}
 	runs.named("server") {
@@ -57,5 +61,4 @@ dependencies {
 	implementation(libs.moulberry.mixinconstraints)
 	include(libs.moulberry.mixinconstraints)
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
-	//modLocalRuntime("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
 }

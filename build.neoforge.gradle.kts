@@ -31,7 +31,7 @@ neoForge {
 			client()
 			gameDirectory = file("run/")
 			ideName = "NeoForge Client (${stonecutter.active?.version})"
-			programArgument("--username=Dev")
+			programArgument("--username=Flowyan")
 		}
 		register("server") {
 			server()
@@ -56,3 +56,5 @@ dependencies {
 tasks.named("createMinecraftArtifacts") {
 	dependsOn(tasks.named("stonecutterGenerate"))
 }
+
+
