@@ -23,8 +23,24 @@ import java.util.*
 import javax.inject.Inject
 
 fun Project.prop(name: String): String = (findProperty(name) ?: "") as String
-fun Project.env(variable: String): String? = providers.environmentVariable(variable).orNull
+fun Project.env(variable: String): String? = providers.environmentVariable(variable).orNull ?: dotEnv()[variable]
 fun Project.envTrue(variable: String): Boolean = env(variable)?.toDefaultLowerCase() == "true"
+
+private fun Project.dotEnv(): Map<String, String> {
+	val file = rootProject.file(".env")
+	if (!file.exists()) return emptyMap()
+	return file.readLines()
+		.mapNotNull { raw ->
+			val line = raw.trim()
+			if (line.isEmpty() || line.startsWith("#")) return@mapNotNull null
+			val split = line.indexOf('=')
+			if (split <= 0) return@mapNotNull null
+			val key = line.substring(0, split).trim()
+			val value = line.substring(split + 1).trim().trim('"', '\'')
+			key to value
+		}
+		.toMap()
+}
 
 abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	override fun apply(project: Project) = with(project) {
@@ -57,7 +73,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		val modId = prop("mod.id")
 		val modVersion = prop("mod.version")
 		val channelTag = prop("mod.channel_tag")
-		val mcVersion = prop("deps.minecraft")
+		var mcVersion = prop("deps.minecraft")
 
 		val stonecutter = extensions.getByType<StonecutterBuildExtension>()
 
@@ -300,8 +316,10 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 			val jarTask = tasks.named(ext.jarTask.get()).map { it as Jar }
 			val srcJarTask = tasks.named(ext.sourcesJarTask.get()).map { it as Jar }
-			val currentVersion = stonecutter.current.version
+			var currentVersion = stonecutter.current.version
 			val deps = ext.dependencies
+
+			if (currentVersion == "1.21.0") currentVersion = "1.21"
 
 			file.set(jarTask.flatMap(Jar::getArchiveFile))
 			additionalFiles.from(srcJarTask.flatMap(Jar::getArchiveFile))
@@ -310,7 +328,15 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			changelog.set(rootProject.file("CHANGELOG.md").readText())
 			modLoaders.add(loader)
 
-			displayName = "${prop("mod.name")} $modVersion ${loader.replaceFirstChar(Char::titlecase)} $currentVersion"
+			val formattedLoader =
+				when (loader.lowercase()) {
+					"forge" -> "Forge"
+					"neoforge" -> "NeoForge"
+					"fabric" -> "Fabric"
+					else -> loader.replaceFirstChar(Char::titlecase)
+				}
+
+			displayName = "$modVersion for $formattedLoader $currentVersion"
 
 			modrinth(deps, currentVersion, additionalVersions, mrStaging, modrinthAccessToken)
 			if (!mrStaging) curseforge(deps, currentVersion, additionalVersions, false, curseforgeAccessToken)
