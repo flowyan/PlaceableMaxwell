@@ -1,0 +1,19 @@
+{
+  "category.placeablemaxwell.placeablemaxwell_tab": "Maxwell the placeable cat",
+
+  "block.placeablemaxwell.maxwell": "Maxwell",
+  "block.placeablemaxwell.mars": "Mars",
+  "block.placeablemaxwell.valenok": "Valenok",
+  "block.placeablemaxwell.vasilisa": "Vasilisa",
+  "block.placeablemaxwell.poomba": "Poomba",
+  "death.attack.placeablemaxwell.falling_maxwell_cat": "%1$s byl(a) rozmáčknut(a) padající kočkou",
+  "death.attack.placeablemaxwell.falling_maxwell_cat.player": "%1$s byl(a) rozmáčknut(a) padající kočkou při boji s %2$s",
+
+  "placeablemaxwell.configuration.title": "Maxwell the placeable cat | Konfigurace",
+  "placeablemaxwell.configuration.section.placeablemaxwell.common.toml": "Obecná nastavení",
+  "placeablemaxwell.configuration.section.placeablemaxwell.common.toml.title": "Obecná nastavení",
+  "placeablemaxwell.configuration.holidayFeaturesEnabled": "Sváteční funkce",
+  "placeablemaxwell.configuration.holidayFeaturesEnabled.tooltip": "Zapnout nebo vypnout sváteční funkce.",
+  "placeablemaxwell.configuration.forceHoliday": "Vynutit svátek",
+  "placeablemaxwell.configuration.forceHoliday.tooltip": "Vynutit aktivaci svátečních funkcí bez ohledu na datum."
+}
