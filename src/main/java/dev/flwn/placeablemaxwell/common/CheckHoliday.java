@@ -1,4 +1,4 @@
-package dev.flwn.placeablemaxwell.platform.neoforge;
+package dev.flwn.placeablemaxwell.common;
 
 import java.time.LocalDate;
 
@@ -6,7 +6,7 @@ public class CheckHoliday {
 
 	// Returns true if it is currently the Christmas holiday period (december to january 8)
 	public static boolean isXmas() {
-		if (Config.forceHoliday == Config.MaxwellHoliday.XMAS) return true;
+		if (Config.forceHoliday == MaxwellHoliday.XMAS) return true;
 		if (!Config.holidayFeaturesEnabled) return false;
 
 		LocalDate date = LocalDate.now();
@@ -22,15 +22,15 @@ public class CheckHoliday {
 		return false;
 	}
 
-	public static Config.MaxwellHoliday getCurrentHoliday() {
+	public static MaxwellHoliday getCurrentHoliday() {
 		if (isXmas()) {
-			return Config.MaxwellHoliday.XMAS;
+			return MaxwellHoliday.XMAS;
 		}
 		// else if (isHalloween()) {
 		// 	return Config.MaxwellHoliday.HALLOWEEN;
 		// }
 		else {
-			return Config.MaxwellHoliday.NONE;
+			return MaxwellHoliday.NONE;
 		}
 	}
 }
