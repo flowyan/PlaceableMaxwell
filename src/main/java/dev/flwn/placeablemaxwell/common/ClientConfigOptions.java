@@ -18,11 +18,10 @@ import java.util.Arrays;
 import static dev.flwn.placeablemaxwell.common.Config.forceHoliday;
 import static dev.flwn.placeablemaxwell.common.Config.holidayFeaturesEnabled;
 
-@OnlyIn(Dist.CLIENT)
+//? <=1.20.6 {
+/*@OnlyIn(Dist.CLIENT)
 public final class ClientConfigOptions {
-
-	//? <=1.20.6 {
-	/*public static OptionInstance<?>[] getOptions() {
+	public static OptionInstance<?>[] getOptions() {
 		return new OptionInstance<?>[]{
 				OptionInstance.createBoolean(
 						"placeablemaxwell.configuration.holidayFeaturesEnabled",
@@ -46,5 +45,5 @@ public final class ClientConfigOptions {
 				)
 		};
 	}
-	*///?}
 }
+*///?}
