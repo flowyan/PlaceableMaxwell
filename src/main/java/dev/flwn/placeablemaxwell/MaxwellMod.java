@@ -18,7 +18,7 @@ import dev.flwn.placeablemaxwell.platform.neoforge.NeoforgePlatform;
 public class MaxwellMod {
 
 	public static final String MOD_ID = /*$ mod_id*/ "placeablemaxwell";
-	public static final String MOD_VERSION = /*$ mod_version*/ "2.1.1";
+	public static final String MOD_VERSION = /*$ mod_version*/ "2.1.2";
 	public static final String MOD_FRIENDLY_NAME = /*$ mod_name*/ "Maxwell the placeable cat";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
