@@ -4,7 +4,6 @@ package dev.flwn.placeablemaxwell.common;
 //? if <=1.20.6 {
 
 /*import com.mojang.serialization.Codec;
-import net.minecraft.client.OptionInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.OptionEnum;
 import net.minecraft.util.StringRepresentable;
@@ -69,33 +68,6 @@ public class Config {
 		FORCE_HOLIDAY.set(value);
 		forceHoliday = value;
 	}
-
-	//? <=1.20.6 {
-	/*public static OptionInstance<?>[] getOptions() {
-		return new OptionInstance<?>[]{
-				OptionInstance.createBoolean(
-						"placeablemaxwell.configuration.holidayFeaturesEnabled",
-						OptionInstance.cachedConstantTooltip(Component.translatable("placeablemaxwell.configuration.holidayFeaturesEnabled.tooltip")),
-						holidayFeaturesEnabled,
-						Config::setHolidayFeaturesEnabled
-				),
-				new OptionInstance<>(
-						"placeablemaxwell.configuration.forceHoliday",
-						OptionInstance.cachedConstantTooltip(Component.translatable("placeablemaxwell.configuration.forceHoliday.tooltip")),
-						OptionInstance.forOptionEnum(),
-						new OptionInstance.Enum<>(
-								Arrays.asList(MaxwellHoliday.values()),
-								Codec.INT.xmap(
-										id -> MaxwellHoliday.values()[id],
-										MaxwellHoliday::getId
-								)
-						),
-						forceHoliday,
-						Config::setForceHoliday
-				)
-		};
-	}
-	*///?}
 
 	@SubscribeEvent
 	static void onLoad(final ModConfigEvent event) {
