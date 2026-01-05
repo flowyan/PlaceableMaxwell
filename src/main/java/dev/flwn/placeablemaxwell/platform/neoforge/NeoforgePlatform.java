@@ -15,7 +15,7 @@ public class NeoforgePlatform implements Platform {
 	}
 
 	@Override
-	public dev.flwn.placeablemaxwell.platform.Platform.ModLoader loader() {
+	public ModLoader loader() {
 		return ModLoader.NEOFORGE;
 	}
 
