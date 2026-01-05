@@ -31,14 +31,16 @@ public class ConfigScreen extends OptionsSubScreen {
 		 //?} else {
 		/^this.list = this.addRenderableWidget(new OptionsList(this.minecraft, this.width, this.height, 32, this.height - 32, 25));
 		^///?}
-		for (OptionInstance<?> option : Config.getOptions()) {
+		for (OptionInstance<?> option : ClientConfigOptions.getOptions()) {
 			this.list.addBig(option);
 		}
 
 		this.addWidget(this.list);
-		this.addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, (p_280842_) -> {
+		//? if <1.20.6 {
+		/^this.addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, (p_280842_) -> {
 			this.minecraft.setScreen(this.lastScreen);
 		}).bounds(this.width / 2 - 100, this.height - 27, 200, 20).build());
+		^///?}
 		super.init();
 	}
 
