@@ -314,7 +314,14 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 				dryRun = true
 			}
 
-			val jarTask = tasks.named(ext.jarTask.get()).map { it as Jar }
+			val isForge = loader == "forge"
+			val targetName = if(isForge) {
+				"reobfJar"
+			} else {
+				ext.jarTask.get()
+			}
+
+			val jarTask = tasks.named(targetName).map { it as Jar }
 			val srcJarTask = tasks.named(ext.sourcesJarTask.get()).map { it as Jar }
 			var currentVersion = stonecutter.current.version
 			val deps = ext.dependencies
