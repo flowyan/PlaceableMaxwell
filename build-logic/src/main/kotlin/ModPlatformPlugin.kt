@@ -8,14 +8,13 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.JavaExec
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 import org.gradle.jvm.tasks.Jar
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.*
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.plugins.ide.idea.model.IdeaModel
@@ -23,23 +22,16 @@ import java.util.*
 import javax.inject.Inject
 
 fun Project.prop(name: String): String = (findProperty(name) ?: "") as String
-fun Project.env(variable: String): String? = providers.environmentVariable(variable).orNull ?: dotEnv()[variable]
+
+fun Project.env(variable: String): String? = providers.environmentVariable(variable).orNull
+
 fun Project.envTrue(variable: String): Boolean = env(variable)?.toDefaultLowerCase() == "true"
 
-private fun Project.dotEnv(): Map<String, String> {
-	val file = rootProject.file(".env")
-	if (!file.exists()) return emptyMap()
-	return file.readLines()
-		.mapNotNull { raw ->
-			val line = raw.trim()
-			if (line.isEmpty() || line.startsWith("#")) return@mapNotNull null
-			val split = line.indexOf('=')
-			if (split <= 0) return@mapNotNull null
-			val key = line.substring(0, split).trim()
-			val value = line.substring(split + 1).trim().trim('"', '\'')
-			key to value
-		}
-		.toMap()
+fun RepositoryHandler.strictMaven(
+	url: String, vararg groups: String, configure: MavenArtifactRepository.() -> Unit = {}
+) = exclusiveContent {
+	forRepository { maven(url) { configure() } }
+	filter { groups.forEach(::includeGroup) }
 }
 
 abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
@@ -47,7 +39,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		val inferredLoader = project.buildFile.name.substringAfter('.').replace(".gradle.kts", "")
 		val inferredLoaderIsFabric = inferredLoader == "fabric"
 
-		val extension = extensions.create("platform", ModPlatformExtensionImpl::class.java).apply {
+		val extension = extensions.create("platform", ModPlatformExtension::class.java).apply {
 			loader.convention(inferredLoader)
 			jarTask.convention(if (inferredLoaderIsFabric) "remapJar" else "jar")
 			sourcesJarTask.convention(if (inferredLoaderIsFabric) "remapSourcesJar" else "sourcesJar")
@@ -64,7 +56,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		}
 	}
 
-	private fun Project.configureProject(extension: ModPlatformExtensionImpl) {
+	private fun Project.configureProject(extension: ModPlatformExtension) {
 		val loader = extension.loader.get()
 		val isFabric = loader == "fabric"
 		val isNeoForge = loader == "neoforge"
@@ -73,7 +65,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		val modId = prop("mod.id")
 		val modVersion = prop("mod.version")
 		val channelTag = prop("mod.channel_tag")
-		var mcVersion = prop("deps.minecraft")
+		val mcVersion = prop("deps.minecraft")
 
 		val stonecutter = extensions.getByType<StonecutterBuildExtension>()
 
@@ -95,34 +87,28 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		)
 
 		if (isFabric) {
-			extension.dependencies {
-				required("java") {
-					versionRange = ">=${extension.requiredJava.get().majorVersion}"
-				}
-			}
+			extension.dependencies { required("java") { versionRange = ">=${extension.requiredJava.get().majorVersion}" } }
 		}
 
 		configureFletchingTable()
-		configureJarTask(modId)
+		configureJarTask(modId, loader)
 		configureIdea()
-		configureProcessResources(
-			isFabric,
-			isNeoForge,
-			isForge,
-			modId,
-			"$modVersion$channelTag",
-			mcVersion,
-			extension,
-			extension.requiredJava.get()
-		)
+		configureProcessResources(isFabric, isNeoForge, isForge, modId, "$modVersion$channelTag", mcVersion, extension, extension.requiredJava.get())
 		configureJava(stonecutter, extension.requiredJava.get())
 		registerBuildAndCollectTask(extension, "$modVersion$channelTag")
 		configurePublishing(extension, loader, stonecutter, "$modVersion$channelTag", channelTag, version.toString())
 	}
 
-	private fun Project.configureJarTask(modId: String) {
+	private fun Project.configureJarTask(modId: String, loader: String) {
+		val isForge = loader == "forge"
+
 		tasks.withType<Jar>().configureEach {
 			archiveBaseName.set(modId)
+			if (isForge) {
+				manifest.attributes(
+					"MixinConfigs" to "${modId}.mixins.json"
+				)
+			}
 		}
 	}
 
@@ -133,11 +119,12 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		modId: String,
 		modVersion: String,
 		mcVersion: String,
-		extension: ModPlatformExtensionImpl,
+		extension: ModPlatformExtension,
 		requiredJava: JavaVersion
 	) {
 		tasks.named<ProcessResources>("processResources") {
 			dependsOn(tasks.named("stonecutterGenerate"))
+			dependsOn("kspKotlin")
 
 			filesMatching("*.mixins.json") { expand("java" to "JAVA_${requiredJava.majorVersion}") }
 
@@ -238,6 +225,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	private fun Project.configureJava(stonecutter: StonecutterBuildExtension, requiredJava: JavaVersion) {
 		extensions.configure<JavaPluginExtension>("java") {
 			withSourcesJar()
+			withJavadocJar()
 			sourceCompatibility = requiredJava
 			targetCompatibility = requiredJava
 		}
@@ -282,17 +270,21 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		}
 	}
 
-	private fun Project.registerBuildAndCollectTask(extension: ModPlatformExtensionImpl, modVersion: String) {
+	private fun Project.registerBuildAndCollectTask(extension: ModPlatformExtension, modVersion: String) {
 		tasks.register<Copy>("buildAndCollect") {
 			group = "build"
-			from(tasks.named(extension.jarTask.get()))
+			from(
+				tasks.named(extension.jarTask.get()),
+				tasks.named(extension.sourcesJarTask.get()),
+				tasks.named("javadocJar").get()
+			)
 			into(rootProject.layout.buildDirectory.file("libs/$modVersion"))
 			dependsOn("build")
 		}
 	}
 
 	private fun Project.configurePublishing(
-		ext: ModPlatformExtensionImpl,
+		ext: ModPlatformExtension,
 		loader: String,
 		stonecutter: StonecutterBuildExtension,
 		modVersion: String,
@@ -315,7 +307,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			}
 
 			val isForge = loader == "forge"
-			val targetName = if(isForge) {
+			val targetName = if (isForge) {
 				"reobfJar"
 			} else {
 				ext.jarTask.get()
