@@ -22,7 +22,7 @@ pluginManagement {
 
 plugins {
 	id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-	id("dev.kikugie.stonecutter") version "0.8"
+	id("dev.kikugie.stonecutter") version "0.9.1"
 }
 
 stonecutter {
@@ -46,7 +46,11 @@ stonecutter {
 		match("1.21.10", "neoforge")
 		match("1.21.11", "neoforge")
 
+		match("26.1", "neoforge")
+		match("26.1.1", "neoforge")
+		match("26.1.2", "neoforge")
+
 		// Should be the latest release
-		vcsVersion = "1.21.11-neoforge"
+		vcsVersion = "26.1.2-neoforge"
 	}
 }
