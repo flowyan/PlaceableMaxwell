@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 fun Project.prop(name: String): String = (findProperty(name) ?: "") as String
 
-fun Project.env(variable: String): String? = providers.environmentVariable(variable).orNull
+fun Project.env(variable: String): String? = providers.environmentVariable(variable).orNull ?: dotEnv()[variable]
 
 fun Project.envTrue(variable: String): Boolean = env(variable)?.toDefaultLowerCase() == "true"
 
@@ -32,6 +32,22 @@ fun RepositoryHandler.strictMaven(
 ) = exclusiveContent {
 	forRepository { maven(url) { configure() } }
 	filter { groups.forEach(::includeGroup) }
+}
+
+private fun Project.dotEnv(): Map<String, String> {
+	val file = rootProject.file(".env")
+	if (!file.exists()) return emptyMap()
+	return file.readLines()
+		.mapNotNull { raw ->
+			val line = raw.trim()
+			if (line.isEmpty() || line.startsWith("#")) return@mapNotNull null
+			val split = line.indexOf('=')
+			if (split <= 0) return@mapNotNull null
+			val key = line.substring(0, split).trim()
+			val value = line.substring(split + 1).trim().trim('"', '\'')
+			key to value
+		}
+		.toMap()
 }
 
 abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
@@ -79,6 +95,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		extension.requiredJava.set(
 			when {
+				stonecutter.eval(stonecutter.current.version, ">=26.1") -> JavaVersion.VERSION_25
 				stonecutter.eval(stonecutter.current.version, ">=1.20.6") -> JavaVersion.VERSION_21
 				stonecutter.eval(stonecutter.current.version, ">=1.18") -> JavaVersion.VERSION_17
 				stonecutter.eval(stonecutter.current.version, ">=1.17") -> JavaVersion.VERSION_16
