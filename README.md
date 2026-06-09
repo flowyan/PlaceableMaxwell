@@ -14,6 +14,7 @@ Modern Gradle plugin for multi-version development, you can check out [Stonecutt
 ## Credits
 * [Chutoy](https://x.com/chutoyjohn) - Helped with the item models and testing
 * bean(alwayshasbean) - [Dingus/Maxwell Cat model](https://sketchfab.com/3d-models/dingus-the-cat-2ca7f3c1957847d6a145fc35de9046b0)
+* [rotgruengelb](https://bsky.app/profile/rotgruengelb.bsky.social) - [Stonecutter Mod Template](https://github.com/rotgruengelb/stonecutter-mod-template)
 * Luke Graham Landry's [Forge Modding Tutorials](https://moddingtutorials.org)
 * [Kaupenjoe's 1.20.1 tutorial repo](https://github.com/Tutorials-By-Kaupenjoe/Forge-Tutorial-1.20.X/tree/main)
 * [Maxwell the carryable cat](https://steamcommunity.com/sharedfiles/filedetails/?id=2878054450) - Where the idea came from
