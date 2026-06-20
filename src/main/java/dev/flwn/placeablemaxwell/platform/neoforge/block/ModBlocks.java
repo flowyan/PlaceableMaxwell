@@ -5,7 +5,7 @@ import dev.flwn.placeablemaxwell.platform.neoforge.block.custom.MaxwellBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 //? if <1.21.10
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -60,7 +60,7 @@ public class ModBlocks {
 		//? if <1.21.10 && !=1.20.1 {
 		/*return BLOCKS.registerBlock(name, MaxwellBlock::new, BlockBehaviour.Properties.of()
 				//? if >1.21.1
-				.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MaxwellMod.MOD_ID, name)))
+				.setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, name)))
 				.strength(strength)
 				.sound(soundType)
 				.noOcclusion()

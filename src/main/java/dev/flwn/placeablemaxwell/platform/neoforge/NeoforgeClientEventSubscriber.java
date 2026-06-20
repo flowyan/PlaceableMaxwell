@@ -9,7 +9,7 @@ import dev.flwn.placeablemaxwell.platform.neoforge.item.HolidayRecord;
 //? if <=1.21.3
 //import dev.flwn.placeablemaxwell.platform.neoforge.item.ModItems;
 //? if <=1.21.10 {
-/*import net.minecraft.resources.ResourceLocation;
+/*import net.minecraft.resources.Identifier;
  *///?} else {
 import net.minecraft.resources.Identifier;
 //?}
@@ -49,9 +49,9 @@ public class NeoforgeClientEventSubscriber {
 		//? if <=1.21.3 {
 		/*event.enqueueWork(() -> {
 			//? if >1.20.6
-			var xmasId = ResourceLocation.fromNamespaceAndPath(MaxwellMod.MOD_ID, "xmas");
+			var xmasId = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, "xmas");
 			//? if <=1.20.6
-			//var xmasId = new ResourceLocation(MaxwellMod.MOD_ID, "xmas");
+			//var xmasId = new Identifier(MaxwellMod.MOD_ID, "xmas");
 			ItemProperties.register(ModItems.MAXWELL_BLOCK.get(), xmasId, (stack, level, entity, seed) -> CheckHoliday.isXmas() ? 1.0f : 0.0f);
 			ItemProperties.register(ModItems.MARS_BLOCK.get(), xmasId, (stack, level, entity, seed) -> CheckHoliday.isXmas() ? 1.0f : 0.0f);
 			ItemProperties.register(ModItems.VALENOK_BLOCK.get(), xmasId, (stack, level, entity, seed) -> CheckHoliday.isXmas() ? 1.0f : 0.0f);
@@ -75,7 +75,7 @@ public class NeoforgeClientEventSubscriber {
 	@SubscribeEvent
 	public static void registerSelectProperties(RegisterSelectItemModelPropertyEvent event) {
 		//? if <=1.21.10 {
-		/*var identifier = ResourceLocation.fromNamespaceAndPath(MaxwellMod.MOD_ID, "holiday");
+		/*var identifier = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, "holiday");
 		 *///?} else {
 		var identifier = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, "holiday");
 		//?}

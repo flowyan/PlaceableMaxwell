@@ -6,7 +6,7 @@ import dev.flwn.placeablemaxwell.platform.neoforge.block.custom.MaxwellBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 //? if <1.21.11 {
-/*import net.minecraft.resources.ResourceLocation;
+/*import net.minecraft.resources.Identifier;
 *///?} else {
 import net.minecraft.resources.Identifier;
  //?}
@@ -70,9 +70,9 @@ public class ModItems {
 		//? if >=1.21.11 {
 		var identifier = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, name);
 		 //?} elif >1.20.6 || =1.20.1 {
-		/*var identifier = ResourceLocation.fromNamespaceAndPath(MaxwellMod.MOD_ID, name);
+		/*var identifier = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, name);
 		*///?} else {
-		/*var identifier = new ResourceLocation(MaxwellMod.MOD_ID, name);
+		/*var identifier = new Identifier(MaxwellMod.MOD_ID, name);
 		 *///?}
 
 		//? if >1.21.1 {

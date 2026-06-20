@@ -11,7 +11,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 //? if <1.21.11 {
-/*import net.minecraft.resources.ResourceLocation;
+/*import net.minecraft.resources.Identifier;
 		*///?} else {
 import net.minecraft.resources.Identifier;
  //?}
@@ -53,9 +53,9 @@ public class MaxwellBlock extends FallingBlock {
 	//? if >=1.21.11 {
 	public static final Identifier DAMAGE_ID = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, "falling_maxwell_cat");
 	 //?} elif >1.20.6 || =1.20.1 {
-	/*public static final ResourceLocation DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(MaxwellMod.MOD_ID, "falling_maxwell_cat");
+	/*public static final Identifier DAMAGE_ID = Identifier.fromNamespaceAndPath(MaxwellMod.MOD_ID, "falling_maxwell_cat");
 	*///?} else {
-	/*public static final ResourceLocation DAMAGE_ID = new ResourceLocation(MaxwellMod.MOD_ID, "falling_maxwell_cat");
+	/*public static final Identifier DAMAGE_ID = new Identifier(MaxwellMod.MOD_ID, "falling_maxwell_cat");
 	 *///?}
 	public static final ResourceKey<DamageType> FALLING_MAXWELL_CAT = ResourceKey.create(Registries.DAMAGE_TYPE, DAMAGE_ID);
 
