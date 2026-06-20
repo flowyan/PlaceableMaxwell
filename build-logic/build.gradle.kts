@@ -1,5 +1,6 @@
 plugins {
 	`kotlin-dsl`
+	kotlin("plugin.serialization") version embeddedKotlinVersion
 }
 
 gradlePlugin {
@@ -12,7 +13,6 @@ gradlePlugin {
 }
 
 repositories {
-	mavenLocal()
 	mavenCentral()
 	gradlePluginPortal()
 	maven("https://maven.fabricmc.net/") { name = "Fabric" }
@@ -28,4 +28,7 @@ dependencies {
 	implementation(libs.mod.publish.plugin)
 	implementation(libs.foojay.resolver)
 	implementation(libs.fletching.table)
+	implementation(libs.vanniktech.maven.publish)
+	implementation(libs.serialization.json)
+	implementation(libs.serialization.toml)
 }

@@ -1,62 +1,101 @@
-import org.gradle.kotlin.dsl.register
-
 plugins {
 	id("mod-platform")
 	id("net.neoforged.moddev.legacyforge")
+}
+
+stonecutter {
+	val (version, loader) = current.project.split('-', limit = 2)
+	properties.tags(version, loader)
+
+	replacements.string(current.parsed >= "1.21.11") {
+		replace("ResourceLocation", "Identifier")
+		replace("location()", "identifier()")
+	}
 }
 
 platform {
 	loader = "forge"
 	dependencies {
 		required("minecraft") {
-			forgeVersionRange = "[${prop("deps.minecraft")}]"
+			forgeLikeVersionRange = prop("deps.minecraft")
 		}
 		required("forge") {
-			forgeVersionRange = "[1,)"
+			forgeLikeVersionRange.set("[1,)")
 		}
 	}
 }
 
 legacyForge {
-	version = "${property("deps.minecraft")}-${property("deps.forge")}"
+	version = "${prop("deps.minecraft")}-${prop("deps.forge")}"
 
 	validateAccessTransformers = true
 
 	accessTransformers.from(
-		rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg")
+		rootProject.file("src/main/resources/aw/${sc.current.version}.cfg")
 	)
 
 	runs {
 		register("client") {
 			client()
 			gameDirectory = file("run/")
-			ideName = "Forge Client (${stonecutter.active?.version})"
-			programArgument("--username=Flowyan")
+			ideName = "Forge Client (${sc.current.version})"
+			programArgument("--username=Dev")
 		}
 		register("server") {
 			server()
 			gameDirectory = file("run/")
-			ideName = "Forge Server (${stonecutter.active?.version})"
+			ideName = "Forge Server (${sc.current.version})"
 		}
 	}
 
 
 	mods {
-		register(property("mod.id") as String) {
+		register(prop("mod.id")) {
 			sourceSet(sourceSets["main"])
 		}
 	}
 }
 
+mixin {
+	add(sourceSets.main.get(), "${prop("mod.id")}.mixins.refmap.json")
+	config("${prop("mod.id")}.mixins.json")
+}
+
+val ensureMixinMappings = tasks.register("ensureMixinMappings") {
+	val mappings = layout.buildDirectory.file("mixin/${prop("mod.id")}.mixins.refmap.json.mappings.tsrg")
+
+	outputs.file(mappings)
+	mustRunAfter(tasks.named("jar"))
+
+	doLast {
+		val mappingsFile = mappings.get().asFile
+		if (!mappingsFile.exists()) {
+			mappingsFile.parentFile.mkdirs()
+			mappingsFile.writeText("")
+		}
+	}
+}
+
+tasks.named("reobfJar") {
+	dependsOn(ensureMixinMappings)
+}
+
+repositories {
+	mavenCentral()
+	strictMaven("https://api.modrinth.com/maven", "maven.modrinth") { name = "Modrinth" }
+}
+
 dependencies {
-	implementation(libs.moulberry.mixinconstraints)
-	jarJar(libs.moulberry.mixinconstraints)
+	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
+
+	// implementation(libs.moulberry.mixinconstraints)
+	// jarJar(libs.moulberry.mixinconstraints)
 }
 
 sourceSets {
 	main {
 		resources.srcDir(
-			"${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated"
+			"${rootDir}/versions/datagen/${sc.current.version.split("-")[0]}/src/main/generated"
 		)
 	}
 }
@@ -64,4 +103,3 @@ sourceSets {
 tasks.named("createMinecraftArtifacts") {
 	dependsOn(tasks.named("stonecutterGenerate"))
 }
-

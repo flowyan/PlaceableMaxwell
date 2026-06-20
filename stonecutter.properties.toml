@@ -1,0 +1,79 @@
+mod.id = "placeablemaxwell"
+mod.name = "Maxwell the placeable cat"
+mod.group = "dev.flwn"
+mod.version = "2.1.2"
+mod.channel_tag = ""
+mod.description = "Adds Maxwell the placeable cat."
+mod.authors = ["Flowyan"]
+mod.contributors = ["bean(alwayshasbean)", "Chutoy"]
+mod.inception_year = "2022"
+mod.license.name = "CC BY 4.0"
+mod.license.url = "https://opensource.org/licenses/MIT"
+mod.license.dist = "repo"
+mod.sources_url = "https://github.com/flowyan/PlaceableMaxwell"
+mod.homepage_url = "https://github.com/flowyan/PlaceableMaxwell"
+mod.issues_url = "https://github.com/flowyan/PlaceableMaxwell/issues"
+#mod.discord_url = "https://discord.gg/aunYJB4wz9"
+[[mod.pom.developers]]
+id = "flowyan"
+name = "Flowyan"
+url = "https://github.com/flowyan"
+
+#[fabric] some other day
+#deps.fabric-loader = "0.19.2"
+
+[forge]
+
+[forge."1.20.1"]
+deps.minecraft = "1.20.1"
+deps.forge = "47.4.20"
+
+[neoforge]
+
+[neoforge."1.20.6"]
+deps.minecraft = "1.20.6"
+deps.neoforge = "20.6.139"
+
+[neoforge."1.21.1"]
+deps.minecraft = "1.21.1"
+deps.neoforge = "21.1.233"
+publish.additionalVersions = ["1.21"]
+
+[neoforge."1.21.2"]
+deps.minecraft = "1.21.2"
+deps.neoforge = "21.2.1-beta"
+
+[neoforge."1.21.3"]
+deps.minecraft = "1.21.3"
+deps.neoforge = "21.3.96"
+
+[neoforge."1.21.4"]
+deps.minecraft = "1.21.4"
+deps.neoforge = "21.4.157"
+
+[neoforge."1.21.5"]
+deps.minecraft = "1.21.5"
+deps.neoforge = "21.5.97"
+
+[neoforge."1.21.8"]
+deps.minecraft = "1.21.8"
+deps.neoforge = "21.8.53"
+publish.additionalVersions = ["1.21.6", "1.21.7"]
+
+[neoforge."1.21.10"]
+deps.minecraft = "1.21.10"
+deps.neoforge = "21.10.64"
+publish.additionalVersions = ["1.21.9"]
+
+[neoforge."1.21.11"]
+deps.minecraft = "1.21.11"
+deps.neoforge = "21.11.42"
+
+[neoforge."26.1.2"]
+deps.minecraft = "26.1.2"
+deps.neoforge = "26.1.2.76"
+publish.additionalVersions = ["26.1", "26.1.1"]
+
+[neoforge."26.2"]
+deps.minecraft = "26.2"
+deps.neoforge = "26.2.0.6-beta"
