@@ -1,6 +1,6 @@
 # Maxwell the placeable cat
 
-A neoforge mod that adds Maxwell the cat to Minecraft and other cats too.
+A NeoForge mod that adds Maxwell the cat to Minecraft and other cats too.
 
 I made this cause I was bored and didn't know what to make :D
 
